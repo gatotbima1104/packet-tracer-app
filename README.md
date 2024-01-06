@@ -23,18 +23,12 @@ URL=https://api.binderbyte.com/v1/track?`
   "summary": {
         "awb": "005232883423",
         "courier": "SiCepat",
-        "service": "REG",
-        "status": "DELIVERED",
-        "date": "2023-12-19 05:38",
-        "desc": "",
-        "amount": "19400",
-        "weight": "1"
+        ...
     },
     "detail": {
         "origin": "Kota",
         "destination": "Los Angles",
-        "shipper": "YOU",
-        "receiver": "ME"
+        ...
     },
     "history": [
         {
