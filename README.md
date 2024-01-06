@@ -20,26 +20,22 @@ URL=https://api.binderbyte.com/v1/track?`
 
 ### response API
 `{
-  "summary": {
+  "summary": { 
         "awb": "005232883423",
-        "courier": "SiCepat",
         ...
     },
     "detail": {
         "origin": "Kota",
-        "destination": "Los Angles",
         ...
     },
     "history": [
         {
             "date": "2023-12-20 13:30:00",
-            "desc": "PAKET DITERIMA OLEH ANONYMUS]",
-            "location": ""
+            ...
         },
         {
             "date": "2023-12-20 11:32:00",
-            "desc": "PAKET DIBAWA OLEH KURIR",
-            "location": ""
+            ...
         },
     ]
 }`
