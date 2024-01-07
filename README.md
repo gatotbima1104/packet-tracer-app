@@ -15,8 +15,12 @@ URL=https://api.binderbyte.com/v1/track?`
 
 `npm run start:dev`
 
-### Try with endpoint [Get = Method Only]
+### Try with endpoint [Get with id and specifiec courier]
 `localhost:3000/tracker?courier={jne/jnt/etc}/id={021318/12301/etc}`
+
+### Try with endpoint [Get with packet id only]
+`localhost:3000/tracker/id?id={021318/12301/etc}`
+
 
 ### response API
 `{

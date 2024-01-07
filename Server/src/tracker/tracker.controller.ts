@@ -13,4 +13,9 @@ export class TrackerController {
   ) {
     return this.trackerService.getPacketInformation(courier, id);
   }
+
+  @Get('id')
+  async getById(@Query('id') id: number){
+    return this.trackerService.getPakcetById(id)
+  }
 }
