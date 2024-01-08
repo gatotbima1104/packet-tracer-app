@@ -21,6 +21,23 @@ URL=https://api.binderbyte.com/v1/track?`
 ### Try with endpoint [Get with packet id only]
 `localhost:3000/tracker/id?id={021318/12301/etc}`
 
+```
+### Updated Currently
+
+#### History
+##### Get all history (default sorting DESC)
+`/tracker/history`
+
+##### Get history by ID
+`/tracker/{id}`
+
+##### Get history with search query
+`/tracker?courier={search(example = jne/jnt/sicepat etc..)}`
+
+
+on going still under development
+```
+
 
 ### response API
 `{
