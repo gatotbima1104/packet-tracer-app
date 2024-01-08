@@ -1,6 +1,15 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  HttpCode,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import axios from 'axios';
 import * as dotenv from 'dotenv';
+import { Tracker } from './entities/tracker.entity';
+import { Repository } from 'typeorm';
 
 dotenv.config();
 
@@ -10,26 +19,55 @@ export class TrackerService {
   private url: string;
   private api: string;
 
-  constructor(){
+  constructor(
+    @InjectRepository(Tracker) private trackerRepo: Repository<Tracker>,
+  ) {
     //assign variable
     this.api = process.env.API_KEY;
-    this.url = process.env.URL
+    this.url = process.env.URL;
   }
 
-  async getPacketInformation(courier: string, id: number) {
+  async getPacketInformation(courier: string, id: string) {
     try {
       //request api
-        const res = await axios.get(
-          `${this.url}api_key=${this.api}&courier=${courier}&awb=${id}`,
-        );
-        //return
-        return res.data.data;
+      const res = await axios.get(
+        `${this.url}api_key=${this.api}&courier=${courier}&awb=${id}`,
+      );
+
+      //find packet id
+      const packetById = await this.trackerRepo.findOne({
+        where: { 
+          display_id: id 
+        },
+      });
+
+      //if exist return, if doesn't exist not return
+      if (!packetById) {
+        //create to db
+        const packet = this.trackerRepo.create({
+          createdAt: new Date(),
+          display_id: id,
+          courier,
+        });
+
+        //save to db
+        await this.trackerRepo.save(packet);
+      }
+
+      return res.data.data;
     } catch (error) {
-      console.log(error);
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.NOT_FOUND,
+          id,
+          message: `${id} is not found !!`,
+        },
+        HttpStatus.NOT_FOUND,
+      );
     }
   }
 
-  async getPakcetById(id: number) {
+  async getPakcetById(id: string) {
     const couriers = [
       'jne',
       'jnt',
@@ -48,23 +86,50 @@ export class TrackerService {
           const res = await axios.get(
             `${this.url}api_key=${this.api}&courier=${item}&awb=${id}`,
           );
-          
+
           // If data is found, return it
           if (res.data.data) {
-            return res.data.data;
+            //find packet id
+            const packetById = await this.trackerRepo.findOne({
+              where: { 
+                display_id: id 
+              },
+            });
+
+            //if exist return, if doesn't exist not return
+            if (!packetById) {
+              //create to db
+              const packet = this.trackerRepo.create({
+                createdAt: new Date(),
+                display_id: id,
+                courier: item,
+              });
+              
+              //save to db
+              await this.trackerRepo.save(packet);
+            }
+
+            //return
+            return res.data.data
           }
         } catch (error) {
           console.log(`${item} doesn't exist currently`, error);
         }
       }
-      throw new NotFoundException('Data not found for the provided ID in any courier.');
+      throw new NotFoundException(
+        'Data not found for the provided ID in any courier.',
+      );
     } catch (error) {
-      console.log(error)
-      return {
-        id,
-        message: `${id} is not found !!`
-      };
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.NOT_FOUND,
+          id,
+          message: `${id} is not found !!`,
+        },
+        HttpStatus.NOT_FOUND,
+      );
     }
   }
 
+  
 }
