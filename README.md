@@ -15,6 +15,8 @@ URL=https://api.binderbyte.com/v1/track?`
 
 `npm run start:dev`
 
+``` 
+
 ### Try with endpoint [Get with id and specifiec courier]
 `localhost:3000/tracker?courier={jne/jnt/etc}/id={021318/12301/etc}`
 
@@ -22,16 +24,19 @@ URL=https://api.binderbyte.com/v1/track?`
 `localhost:3000/tracker/id?id={021318/12301/etc}`
 
 ```
+
+
 ### Updated Currently
 
-#### History
-##### Get all history (default sorting DESC)
+```
+History
+Get all history (default sorting DESC)
 `/tracker/history`
 
-##### Get history by ID
+Get history by ID
 `/tracker/{id}`
 
-##### Get history with search query
+Get history with search query
 `/tracker?courier={search(example = jne/jnt/sicepat etc..)}`
 
 
@@ -40,7 +45,9 @@ on going still under development
 
 
 ### response API
-`{
+```
+
+{
   "summary": { 
         "awb": "005232883423",
         ...
@@ -59,6 +66,8 @@ on going still under development
             ...
         },
     ]
-}`
+}
+
+```
 
 ### Enjoy
