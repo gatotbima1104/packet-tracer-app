@@ -2,27 +2,21 @@
 # Tech Stach (Typescript only) 
 `(Server (Nest Js), Web (Next Js))`
 
-## Server Installation
-```
-
-`npm install`
-
-`create .env`
-
-`npm run start:dev`
-
-```
-
-
 ### .env
 ```
 
-`API_KEY={your_api_key}
-URL=https://api.binderbyte.com/v1/track?`
+API_KEY={your_api_key}
+URL=https://api.binderbyte.com/v1/track?
 
 ```
 
+## Server Installation
+```
 
+=> npm install
+=> npm run start:dev
+
+```
 
 ### Endpoints API Documantation
 ``` 
@@ -38,13 +32,13 @@ Get packet Information [Get with packet id only]
 
 History
 Get all history (default sorting DESC)
-`/tracker/history`
+`/history-packet`
 
 Get history by ID
-`/tracker/{id}`
+`/history-packet/{id}`
 
 Get history with search query
-`/tracker?courier={search(example = jne/jnt/sicepat etc..)}`
+`/history-packet?courier={search(example = jne/jnt/sicepat etc..)}`
 
 >>>>>>>>>>>>>>>>>>>> Coming soon <<<<<<<<<<<<<<<<<<<<<<<<<<
 
