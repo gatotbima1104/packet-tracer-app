@@ -1,0 +1,20 @@
+# railway.yml
+plugins:
+  - name: 'node'
+    version: '21'
+
+env:
+  API_KEY: '$API_KEY'
+  URL: '$URL'
+  DB_HOST: '$DB_HOST'
+  DB_PORT: '$DB_PORT'
+  DB_USER: '$DB_USER'
+  DB_PASSWORD: '$DB_PASSWORD'
+  DB_NAME: '$DB_NAME'
+
+scripts:
+  - name: 'install'
+    command: 'npm install'
+
+  - name: 'start'
+    command: 'npm run start:prod'

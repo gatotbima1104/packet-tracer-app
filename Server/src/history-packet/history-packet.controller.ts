@@ -1,6 +1,5 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { HistoryPacketService } from './history-packet.service';
-import { TrackerService } from 'src/tracker/tracker.service';
 
 @Controller('history-packet')
 export class HistoryPacketController {
@@ -8,7 +7,7 @@ export class HistoryPacketController {
     private trackerService: HistoryPacketService,
   ) {}
 
-  @Get('history')
+  @Get()
   allHistory(@Query('courier') courier: string) {
     if (courier) {
       return this.trackerService.searchHistory(courier);
@@ -17,7 +16,7 @@ export class HistoryPacketController {
     }
   }
 
-  @Get('history/:id')
+  @Get(':id')
   historyId(@Param('id') id: string) {
     return this.trackerService.getHistoryById(id);
   }
