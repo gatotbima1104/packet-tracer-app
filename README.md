@@ -23,10 +23,10 @@ URL=https://api.binderbyte.com/v1/track?
 
 Packet Information
 Get packet Information [Get with id and specifiec courier]
-`/tracker?courier={jne/jnt/etc}/id={021318/12301/etc}`
+`/tracker?courier={jne/jnt/etc}&id={021318/12301 etc..}`
 
 Get packet Information [Get with packet id only]
-`/tracker/id?id={021318/12301/etc}`
+`/tracker/id?id={021318/12301 etc..}`
 
 >>>>>>>>>>>>>>>>> Updated Currently <<<<<<<<<<<<<<<<<<<<<<<
 
@@ -38,11 +38,7 @@ Get history by ID
 `/history-packet/{id}`
 
 Get history with search query
-`/history-packet?courier={search(example = jne/jnt/sicepat etc..)}`
-
->>>>>>>>>>>>>>>>>>>> Coming soon <<<<<<<<<<<<<<<<<<<<<<<<<<
-
-
+`/history-packet?courier={jne/jnt/sicepat etc..}`
 ```
 
 
