@@ -3,32 +3,39 @@
 `(Server (Nest Js), Web (Next Js))`
 
 ## Server Installation
+```
 
 `npm install`
 
 `create .env`
 
-### inside .env
+`npm run start:dev`
+
+```
+
+
+### .env
+```
 
 `API_KEY={your_api_key}
 URL=https://api.binderbyte.com/v1/track?`
 
-`npm run start:dev`
+```
 
+
+
+### Endpoints API Documantation
 ``` 
 
-### Try with endpoint [Get with id and specifiec courier]
-`localhost:3000/tracker?courier={jne/jnt/etc}/id={021318/12301/etc}`
+Packet Information
+Get packet Information [Get with id and specifiec courier]
+`/tracker?courier={jne/jnt/etc}/id={021318/12301/etc}`
 
-### Try with endpoint [Get with packet id only]
-`localhost:3000/tracker/id?id={021318/12301/etc}`
+Get packet Information [Get with packet id only]
+`/tracker/id?id={021318/12301/etc}`
 
-```
+>>>>>>>>>>>>>>>>> Updated Currently <<<<<<<<<<<<<<<<<<<<<<<
 
-
-### Updated Currently
-
-```
 History
 Get all history (default sorting DESC)
 `/tracker/history`
@@ -39,8 +46,9 @@ Get history by ID
 Get history with search query
 `/tracker?courier={search(example = jne/jnt/sicepat etc..)}`
 
+>>>>>>>>>>>>>>>>>>>> Coming soon <<<<<<<<<<<<<<<<<<<<<<<<<<
 
-on going still under development
+
 ```
 
 
@@ -70,4 +78,4 @@ on going still under development
 
 ```
 
-### Enjoy
+# Enjoy Your Time, Send Your Coffe [Here]
