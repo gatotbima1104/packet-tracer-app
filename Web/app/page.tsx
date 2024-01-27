@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import Navbar from "./components/navbar";
-import CardHistory from "./components/cardHistory";
 import HistoryList from "./components/historyList";
+import Galeri from "./components/galeri";
 
 interface Package {
   id: number;
@@ -12,25 +12,34 @@ interface Package {
   tracker: string;
   tracker_from: string;
   no_resi: string;
+  status: string;
 }
 
 const Home: React.FC = () => {
   const [trackingNumber, setTrackingNumber] = useState<string>("");
   const [foundPackage, setFoundPackage] = useState<Package | null>(null);
   const [searchHistory, setSearchHistory] = useState<string[]>([]);
-  const [history, setHistory] = useState<Package[]>([]);
+  const [searchPerformed, setSearchPerformed] = useState<boolean>(false);
 
   const handleSearch = () => {
     const found = paket.find((item) => item.no_resi === trackingNumber);
 
     if (found) {
       setFoundPackage(found);
-      setSearchHistory((prevHistory) => [...prevHistory, trackingNumber]);
-      setHistory((prevHistory) => [found, ...prevHistory]);
+      setSearchHistory((prevHistory) => [trackingNumber, ...prevHistory]);
     } else {
+      setSearchHistory((prevHistory) => [trackingNumber, ...prevHistory]);
       setFoundPackage(null);
     }
+
+    setSearchPerformed(true);
   };
+
+  const handleDeleteHistory = (historyItem: string) => {
+    const updatedHistory = searchHistory.filter((item) => item !== historyItem);
+    setSearchHistory(updatedHistory);
+  };
+
   const paket: Package[] = [
     {
       id: 1,
@@ -39,6 +48,7 @@ const Home: React.FC = () => {
       tracker: "Your Parcel has been By Courier",
       tracker_from: "Yogyakarta",
       no_resi: "SPXID03299053916C",
+      status: "delivered",
     },
     {
       id: 2,
@@ -47,6 +57,7 @@ const Home: React.FC = () => {
       tracker: "Your Parcel has been By Courier",
       tracker_from: "Yogyakarta",
       no_resi: "SPXID03299053916C",
+      status: "delivered",
     },
     {
       id: 3,
@@ -55,6 +66,7 @@ const Home: React.FC = () => {
       tracker: "Your Parcel has been By Courier",
       tracker_from: "Yogyakarta",
       no_resi: "SPXID03299053916C",
+      status: "delivered",
     },
     {
       id: 4,
@@ -63,6 +75,7 @@ const Home: React.FC = () => {
       tracker: "Your Parcel has been By Courier",
       tracker_from: "Yogyakarta",
       no_resi: "SPXID03299053916C",
+      status: "delivered",
     },
     {
       id: 5,
@@ -71,6 +84,7 @@ const Home: React.FC = () => {
       tracker: "Your Parcel has been By Courier",
       tracker_from: "Yogyakarta",
       no_resi: "SPXID03299053916C",
+      status: "delivered",
     },
   ];
 
@@ -94,7 +108,6 @@ const Home: React.FC = () => {
           />
           <button
             onClick={handleSearch}
-            type="submit"
             className="border p-3 rounded-2xl bg-blue-700 text-white hover:bg-blue-500 hover:text-black ont-semibold"
           >
             Cari Paket
@@ -104,41 +117,63 @@ const Home: React.FC = () => {
       <div className="mt-3">
         <HistoryList
           history={searchHistory}
-          onCardClick={(historyItem) => setTrackingNumber(historyItem)}
+          onCardClick={(historyItem) => {
+            setTrackingNumber(historyItem);
+          }}
+          onDeleteClick={handleDeleteHistory}
         />
       </div>
+      {searchPerformed && !foundPackage ? (
+        <div className="text-center mt-8">
+          <p>Data tidak ditemukan</p>
+        </div>
+      ) : null}
       {foundPackage ? (
-        <div className="mx-44 mt-8">
-          <h1 className="font-semibold text-lg">History Paket</h1>
-          <div className="mt-4">
-            <table className="border-collapse w-full">
-              <thead>
-                <tr className="bg-gray-200">
-                  <th className="border p-2">Date and Time</th>
-                  <th className="border p-2">Keterangan</th>
-                  <th className="border p-2">Track</th>
-                  <th className="border p-2">No Resi</th>
-                </tr>
-              </thead>
-              <tbody>
-                {paket.map((item) => (
-                  <tr key={item.id}>
-                    <td className="border p-2 flex gap-2 items-center">
-                      <p>{item.time}</p>
-                      <p>{item.date}</p>
-                    </td>
-                    <td className="border p-2 text-center">{item.tracker}</td>
-                    <td className="border p-2 text-center">
-                      {item.tracker_from}
-                    </td>
-                    <td className="border p-2 text-center">{item.no_resi}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+        <div className="ml-[25rem] mt-8 flex">
+          <div className="w-1/2">
+            <div>
+              <h1 className="font-semibold text-lg">History Paket</h1>
+            </div>
+            <div className="mt-4 mr-10">
+              <table className="border-collapse w-full">
+                <tbody>
+                  {paket.map((item) => (
+                    <tr key={item.id}>
+                      <td className="border p-2 text-center items-center">
+                        <p>{item.time}</p>
+                        <p>{item.date}</p>
+                      </td>
+                      <td className="border p-2 text-center">{item.tracker}</td>
+                      <td className="border p-2 text-center">
+                        {item.tracker_from}
+                      </td>
+                      <td className="border p-2 text-center">{item.no_resi}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div className="tex-center ml-5 mt-10">
+            <h1 className="font-semibold text-lg">Status Pesanan</h1>
+            <div className="mt-2">
+              <p>Melacak Nomor : {foundPackage?.no_resi}</p>
+              <p>Status : {foundPackage?.status}</p>
+              <p>Tujuan : Indonesia</p>
+              <p>Dilacak Oleh : Shoppee express</p>
+            </div>
           </div>
         </div>
       ) : null}
+      <div className="mt-20 text text-center mb-12 mx-80">
+        <h1 className="font-semibold text-3xl ">Track Your Packet Here</h1>
+      </div>
+      <div className="mb-24">
+        <Galeri />
+      </div>
+      <div className="bg-gray-100 py-7">
+        <p className="text-center font-bold">@ copyright 2024</p>
+      </div>
     </>
   );
 };
