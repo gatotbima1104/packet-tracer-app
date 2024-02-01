@@ -4,89 +4,51 @@ import { useState } from "react";
 import Navbar from "./components/navbar";
 import HistoryList from "./components/historyList";
 import Galeri from "./components/galeri";
+import { seacrhPacket } from "./services/packet.sevice";
 
-interface Package {
-  id: number;
-  date: string;
-  time: string;
-  tracker: string;
-  tracker_from: string;
-  no_resi: string;
-  status: string;
+interface IPackage {
+  summary: {
+    awb: string;
+    courier: string;
+    service: string;
+    status: string;
+    date: string;
+    desc: string;
+    amount: string;
+    weight: string;
+  };
+  detail: {
+    origin: string;
+    destination: string;
+    shipper: string;
+    receiver: string;
+  };
+  history: {
+    date: string;
+    desc: string;
+    location: string;
+  }[];
 }
 
-const Home: React.FC = () => {
+const Home: React.FC<IPackage> = () => {
   const [trackingNumber, setTrackingNumber] = useState<string>("");
-  const [foundPackage, setFoundPackage] = useState<Package | null>(null);
   const [searchHistory, setSearchHistory] = useState<string[]>([]);
   const [searchPerformed, setSearchPerformed] = useState<boolean>(false);
 
-  const handleSearch = () => {
-    const found = paket.find((item) => item.no_resi === trackingNumber);
+  const handleSearch = async () => {
+    try {
+      const results = await seacrhPacket();
 
-    if (found) {
-      setFoundPackage(found);
-      setSearchHistory((prevHistory) => [trackingNumber, ...prevHistory]);
-    } else {
-      setSearchHistory((prevHistory) => [trackingNumber, ...prevHistory]);
-      setFoundPackage(null);
+      setSearchPerformed(true);
+    } catch (error) {
+      console.error("Error searching packet:", error);
     }
-
-    setSearchPerformed(true);
   };
 
   const handleDeleteHistory = (historyItem: string) => {
     const updatedHistory = searchHistory.filter((item) => item !== historyItem);
     setSearchHistory(updatedHistory);
   };
-
-  const paket: Package[] = [
-    {
-      id: 1,
-      date: "11-12-2023",
-      time: "10:56",
-      tracker: "Your Parcel has been By Courier",
-      tracker_from: "Yogyakarta",
-      no_resi: "SPXID03299053916C",
-      status: "delivered",
-    },
-    {
-      id: 2,
-      date: "11-12-2023",
-      time: "10:56",
-      tracker: "Your Parcel has been By Courier",
-      tracker_from: "Yogyakarta",
-      no_resi: "SPXID03299053916C",
-      status: "delivered",
-    },
-    {
-      id: 3,
-      date: "11-12-2023",
-      time: "10:56",
-      tracker: "Your Parcel has been By Courier",
-      tracker_from: "Yogyakarta",
-      no_resi: "SPXID03299053916C",
-      status: "delivered",
-    },
-    {
-      id: 4,
-      date: "11-12-2023",
-      time: "10:56",
-      tracker: "Your Parcel has been By Courier",
-      tracker_from: "Yogyakarta",
-      no_resi: "SPXID03299053916C",
-      status: "delivered",
-    },
-    {
-      id: 5,
-      date: "11-12-2023",
-      time: "10:56",
-      tracker: "Your Parcel has been By Courier",
-      tracker_from: "Yogyakarta",
-      no_resi: "SPXID03299053916C",
-      status: "delivered",
-    },
-  ];
 
   return (
     <>
@@ -123,48 +85,6 @@ const Home: React.FC = () => {
           onDeleteClick={handleDeleteHistory}
         />
       </div>
-      {searchPerformed && !foundPackage ? (
-        <div className="text-center mt-8">
-          <p>Data tidak ditemukan</p>
-        </div>
-      ) : null}
-      {foundPackage ? (
-        <div className="ml-[25rem] mt-8 flex">
-          <div className="w-1/2">
-            <div>
-              <h1 className="font-semibold text-lg">History Paket</h1>
-            </div>
-            <div className="mt-4 mr-10">
-              <table className="border-collapse w-full">
-                <tbody>
-                  {paket.map((item) => (
-                    <tr key={item.id}>
-                      <td className="border p-2 text-center items-center">
-                        <p>{item.time}</p>
-                        <p>{item.date}</p>
-                      </td>
-                      <td className="border p-2 text-center">{item.tracker}</td>
-                      <td className="border p-2 text-center">
-                        {item.tracker_from}
-                      </td>
-                      <td className="border p-2 text-center">{item.no_resi}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div className="tex-center ml-5 mt-10">
-            <h1 className="font-semibold text-lg">Status Pesanan</h1>
-            <div className="mt-2">
-              <p>Melacak Nomor : {foundPackage?.no_resi}</p>
-              <p>Status : {foundPackage?.status}</p>
-              <p>Tujuan : Indonesia</p>
-              <p>Dilacak Oleh : Shoppee express</p>
-            </div>
-          </div>
-        </div>
-      ) : null}
       <div className="mt-20 text text-center mb-12 mx-80">
         <h1 className="font-semibold text-3xl ">Track Your Packet Here</h1>
       </div>

@@ -1,25 +1,33 @@
 import axios from "axios";
+import { IPackage } from "../constant/api";
 
-const API_KEY = process.env.NEXT_API_KEY_PACKET;
-const API_BASE_URL = "https://api.binderbyte.com/v1";
+const API_BASE_URL = "https://packet-tracker-api-production.up.railway.app";
 
 const client = axios.create({
   baseURL: API_BASE_URL,
-  params: { api_key: API_KEY },
 });
 
-export const seacrhPacket = async (query: string) => {
+export const seacrhPacket = async (params?: IPackage) => {
   try {
-    const response = await client.get("/tracker", {
-      params: { query },
-    });
-    if (response.data && response.data.results) {
-      return response.data.results;
-    } else {
-      console.error("data tidak ada");
+    let query = "";
+
+    if (params) {
+      const queryParams: string[] = [];
+
+      let key: keyof typeof params;
+      for (key in params) {
+        queryParams.push(`${key}=${params[key]}`);
+      }
+
+      query = queryParams.join("&");
     }
-  } catch (error) {
-    console.error(error);
-    return [];
+
+    const url = query ? `/tracker/id?${query}` : "/tracker/id";
+
+    const response = await client.get(url);
+
+    return response.data;
+  } catch (error: any) {
+    throw Error(error.response.data.message);
   }
 };

@@ -77,6 +77,7 @@ export class TrackerService {
       'tiki',
       'ninja',
       'pos',
+      'spx'
     ];
 
     try {
